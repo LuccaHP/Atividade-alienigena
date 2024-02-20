@@ -52,16 +52,24 @@
         var alien;
         var teclado;
         var fogo;
+        var plataforma;
+        var moeda;
 
         function preload() {
             this.load.image('background', 'assets/bg.png');
             this.load.image('alienigena', 'assets/alienigena.png');
             this.load.image('turbo_nave', 'assets/turbo.png');
+            this.load.image('plataforma_tijolo', 'assets/tijolos.png')
         }
 
         function create() {
             //cria o background conforme já pre adicionado na função preload 
             this.add.image(larguraJogo / 2, alturaJogo / 2, 'background');
+
+
+             //adicionar o fogo da nave
+            fogo = this.add.sprite(0, 0, 'turbo_nave');
+            fogo.setVisible(false);
 
             //criação do alien
             alien = this.physics.add.sprite(larguraJogo/2, 0, 'alienigena');
@@ -70,9 +78,8 @@
             //imput para movimentar o alien pelo teclado 
             teclado = this.input.keyboard.createCursorKeys();
 
-            //adicionar o fogo da nave
-            fogo = this.add.sprite(0, 0, 'turbo_nave');
-            fogo.setVisible(false);
+            plataforma = this.physics.add.staticImage(larguraJogo/2, alturaJogo/2, 'plataforma_tijolo');
+            this.physics.add.collider(alien, plataforma);
         }
 
         function update() {
@@ -88,13 +95,26 @@
             }
 
             if (teclado.up.isDown) {
-                alien.setVelocityY(-150); }
+                alien.setVelocityY(-150); 
+                ativarTurbo();
+            }
             else {
                 //movimento da gravidade
+                semTurbo();
             }
+
+            fogo.setPosition(alien.x, alien.y + alien.height/2);
             
+
+
+
             //funções para ativar e desativar turbo
-            
+            function ativarTurbo(){
+                fogo.setVisible(true);
+            }
+            function semTurbo(){
+                fogo.setVisible(false);
+            }
             
         }
     </script>
