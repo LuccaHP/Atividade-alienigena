@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício do Alien</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        //definição de altura e largura do background do jogo
+        const larguraJogo = 700;
+        const alturaJogo = 850;
+
+        //configuração do framweork Phaser
+        const config = {
+            type: Phaser.AUTO,
+            width: larguraJogo,
+            height: alturaJogo,
+
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 300 },
+                    debug: true
+                }
+            },
+
+        
+
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        //cria a instância do jogo usando a classe Phaser e passando a configuração descrito no config acima 
+        const game = new Phaser.Game(config);
+
+        var alien;
+        var teclado;
+        var fogo;
+
+        function preload() {
+            this.load.image('background', 'assets/bg.png');
+            this.load.image('alienigena', 'assets/alienigena.png');
+            this.load.image('turbo_nave', 'assets/turbo.png');
+        }
+
+        function create() {
+            //cria o background conforme já pre adicionado na função preload 
+            this.add.image(larguraJogo / 2, alturaJogo / 2, 'background');
+
+            //criação do alien
+            alien = this.physics.add.sprite(larguraJogo/2, 0, 'alienigena');
+            alien.setCollideWorldBounds(true)
+
+            //imput para movimentar o alien pelo teclado 
+            teclado = this.input.keyboard.createCursorKeys();
+
+            //adicionar o fogo da nave
+            fogo = this.add.sprite(0, 0, 'turbo_nave');
+            fogo.setVisible(false);
+        }
+
+        function update() {
+            //movimento para a esqueda
+            if (teclado.left.isDown) {
+                alien.setVelocityX(-150);}
+            //movimento para a direita
+            else if (teclado.right.isDown) {
+                alien.setVelocityX(150);}
+            //sem movimento horizontal
+            else {
+                alien.setVelocityX(0);
+            }
+
+            if (teclado.up.isDown) {
+                alien.setVelocityY(-150); }
+            else {
+                //movimento da gravidade
+            }
+            
+            //funções para ativar e desativar turbo
+            
+            
+        }
+    </script>
+</body>
+
+</html>
