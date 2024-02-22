@@ -90,7 +90,7 @@
             base = this.physics.add.staticImage(larguraJogo/2, 830, 'base').setScale(0.5).setSize(2000, 70);
             this.physics.add.collider(alien, base);
             //adição de moeda
-            moeda = this.physics.add.sprite(larguraJogo/2, 0, 'moeda');
+            moeda = this.physics.add.sprite(larguraJogo/4, 0, 'moeda');
             moeda.setCollideWorldBounds(true);
             moeda.setBounce(0.7);
             this.physics.add.collider(moeda, plataforma);
@@ -101,15 +101,18 @@
 
             //alien encostando na mooeda
             this.physics.add.overlap(alien, moeda, function () {
+                // Adiciona a moeda à lista de moedas coletadas
+                moedasColetadas.push(moeda);
+                console.log("Moedas coletadas:", moedasColetadas);  
+                
                 moeda.setVisible(false);//moeda desaparece
                 var posicaoMoeda_Y = Phaser.Math.RND.between(50, 650); //sorteio de numero para a posição 
                 moeda.setPosition(posicaoMoeda_Y, 100);
                 pontuacao += 1; //soma pontuação
                 placar.setText('Moedas: ' + pontuacao); //atualiza o placar
                 moeda.setVisible(true); //ativa a "nova" moeda
-                // Adiciona a moeda à lista de moedas coletadas
-                moedasColetadas.push(moeda);
-                console.log("Moedas coletadas:", moedasColetadas);                
+                
+              
             });
         }
 
