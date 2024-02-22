@@ -32,8 +32,8 @@
             physics: {
                 default: 'arcade',
                 arcade: {
-                    gravity: { y: 300 },
-                    debug: true
+                    gravity: { y: 300 }, //gravidade para alien e moeda
+                    debug: true //teste de hitbox
                 }
             },
 
@@ -49,6 +49,7 @@
         //cria a instância do jogo usando a classe Phaser e passando a configuração descrito no config acima 
         const game = new Phaser.Game(config);
 
+        //variaveis 
         var alien;
         var teclado;
         var fogo;
@@ -60,6 +61,7 @@
         // Lista de moedas coletadas
         var moedasColetadas = [];
 
+        //preload de todas as iamgens do jogo
         function preload() {
             this.load.image('background', 'assets/bg.png');
             this.load.image('player', 'assets/alienigena.png');
@@ -67,12 +69,12 @@
             this.load.image('plataforma_tijolo', 'assets/tijolos.png');
             this.load.image('moeda', 'assets/moeda.png');
             this.load.image('base', 'assets/base.png')
+            this.load.image('sol', 'assets/sol.png')
         }
 
         function create() {
             //cria o background conforme já pre adicionado na função preload 
             this.add.image(larguraJogo / 2, alturaJogo / 2, 'background');
-
 
              //adicionar o fogo da nave
             fogo = this.add.sprite(0, 0, 'turbo_nave');
@@ -81,6 +83,10 @@
             //criação do alien
             alien = this.physics.add.sprite(larguraJogo/2, 0, 'player');
             alien.setCollideWorldBounds(true)
+
+            //cria o sol (extra)
+            sol = this.physics.add.staticImage(610, 100, 'sol').setScale(0.25).refreshBody().setSize(100, 100);
+            this.physics.add.collider(alien, sol);
 
             //imput para movimentar o alien pelo teclado 
             teclado = this.input.keyboard.createCursorKeys();
@@ -112,7 +118,7 @@
                 placar.setText('Moedas: ' + pontuacao); //atualiza o placar
                 moeda.setVisible(true); //ativa a "nova" moeda
                 
-              
+            
             });
         }
 
